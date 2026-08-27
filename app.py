@@ -224,7 +224,6 @@ if uploaded_file is not None:
     ]
 
     if all(column in uploaded_data.columns for column in required_columns):
-
         st.success("✅ Required input columns found")
 
         st.dataframe(
@@ -233,7 +232,6 @@ if uploaded_file is not None:
         )
 
     else:
-
         st.warning(
             "⚠️ CSV must contain: production, target, reserve, rainfall, downtime"
         )
