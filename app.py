@@ -308,10 +308,40 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
         "lon": [longitude]
     })
 
-    st.subheader("📍 Exploration Location")
+    # Multiple sample exploration zones
+    zone_data = pd.DataFrame({
+        "lat": [
+            latitude,
+            latitude + 0.08,
+            latitude - 0.06,
+            latitude + 0.12,
+            latitude - 0.10
+        ],
+        "lon": [
+            longitude,
+            longitude + 0.10,
+            longitude + 0.07,
+            longitude - 0.08,
+            longitude - 0.12
+        ],
+        "Potential": [
+            "Selected Zone",
+            "High Potential",
+            "Medium Potential",
+            "Low Potential",
+            "Medium Potential"
+        ]
+    })
 
-    st.map(map_data)
+    st.subheader("🗺️ Manganese Potential Zone Map")
 
+    st.map(
+        zone_data,
+        latitude="lat",
+        longitude="lon"
+    )
+
+    st.write("🔴 High Potential | 🟡 Medium Potential | 🟢 Low Potential")
 # =========================================================
 # FOOTER
 # =========================================================
