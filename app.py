@@ -10,21 +10,47 @@ st.set_page_config(
 
 st.title("🌍 GeoMind AI")
 st.subheader("Manganese Mine Intelligence Dashboard")
-st.write("AI/ML-based prototype for reserve and production risk analysis.")
 
-# -----------------------------
-# Sample training dataset
-# -----------------------------
+st.write(
+    "AI/ML-based prototype for manganese potential identification "
+    "and mine production risk analysis."
+)
+
+# =========================================================
+# ML TRAINING DATA - SAMPLE PROTOTYPE
+# =========================================================
+
 data = {
-    "production": [7000, 8500, 5000, 8700, 8000, 6500, 8800, 6000, 7500, 8200,
-                    6800, 8300, 5400, 8900, 7200, 6400, 8100, 5800, 8600, 7900],
+    "production": [
+        7000, 8500, 5000, 8700, 8000,
+        6500, 8800, 6000, 7500, 8200,
+        6800, 8300, 5400, 8900, 7200,
+        6400, 8100, 5800, 8600, 7900
+    ],
+
     "target": [9000] * 20,
-    "reserve": [82000, 82000, 60000, 80000, 75000, 70000, 85000, 65000, 78000, 81000,
-                70000, 84000, 62000, 86000, 74000, 68000, 79000, 61000, 83000, 77000],
-    "rainfall": [120, 50, 200, 80, 100, 180, 40, 220, 110, 70,
-                 150, 60, 190, 30, 130, 170, 55, 210, 45, 90],
-    "downtime": [18, 5, 30, 8, 12, 25, 4, 35, 15, 7,
-                 20, 6, 28, 3, 16, 22, 9, 32, 5, 11],
+
+    "reserve": [
+        82000, 82000, 60000, 80000, 75000,
+        70000, 85000, 65000, 78000, 81000,
+        70000, 84000, 62000, 86000, 74000,
+        68000, 79000, 61000, 83000, 77000
+    ],
+
+    "rainfall": [
+        120, 50, 200, 80, 100,
+        180, 40, 220, 110, 70,
+        150, 60, 190, 30, 130,
+        170, 55, 210, 45, 90
+    ],
+
+    "downtime": [
+        18, 5, 30, 8, 12,
+        25, 4, 35, 15, 7,
+        20, 6, 28, 3, 16,
+        22, 9, 32, 5, 11
+    ],
+
     "risk": [
         "HIGH", "LOW", "HIGH", "LOW", "MEDIUM",
         "HIGH", "LOW", "HIGH", "MEDIUM", "LOW",
@@ -35,9 +61,6 @@ data = {
 
 df = pd.DataFrame(data)
 
-# -----------------------------
-# Train ML model
-# -----------------------------
 features = [
     "production",
     "target",
@@ -56,9 +79,14 @@ model = RandomForestClassifier(
 
 model.fit(X, y)
 
-# -----------------------------
-# User inputs
-# -----------------------------
+# =========================================================
+# PRODUCTION RISK ANALYSIS
+# =========================================================
+
+st.divider()
+
+st.header("📊 Mine Production Risk Analysis")
+
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -98,47 +126,196 @@ with col5:
         value=18
     )
 
-# -----------------------------
-# ML Prediction
-# -----------------------------
 if st.button("🔍 Analyse Mine Risk"):
 
-    input_data = pd.DataFrame([[
-        production,
-        target,
-        reserve,
-        rainfall,
-        downtime
-    ]], columns=features)
+    input_data = pd.DataFrame(
+        [[
+            production,
+            target,
+            reserve,
+            rainfall,
+            downtime
+        ]],
+        columns=features
+    )
 
     prediction = model.predict(input_data)[0]
 
-    shortfall = target - production
+    shortfall = max(target - production, 0)
 
     if prediction == "HIGH":
         risk = "🔴 HIGH"
-        recommendation = "Adjust mine schedule and review equipment availability."
+        recommendation = (
+            "Adjust mine schedule and review equipment availability."
+        )
+
     elif prediction == "MEDIUM":
         risk = "🟠 MEDIUM"
-        recommendation = "Monitor weather conditions and equipment performance."
+        recommendation = (
+            "Monitor weather conditions and equipment performance."
+        )
+
     else:
         risk = "🟢 LOW"
-        recommendation = "Continue planned operations."
+        recommendation = (
+            "Continue planned operations."
+        )
 
     st.divider()
-    st.header("📊 Analysis Result")
+
+    st.subheader("📈 Analysis Result")
 
     r1, r2, r3 = st.columns(3)
 
     with r1:
-        st.metric("Production Shortfall", f"{shortfall} tonnes")
+        st.metric(
+            "Production Shortfall",
+            f"{shortfall} tonnes"
+        )
 
     with r2:
-        st.metric("Estimated Reserve", f"{reserve} tonnes")
+        st.metric(
+            "Estimated Reserve",
+            f"{reserve} tonnes"
+        )
 
     with r3:
-        st.metric("ML Risk Prediction", risk)
+        st.metric(
+            "ML Risk Level",
+            risk
+        )
 
-    st.info("🤖 AI Recommendation: " + recommendation)
+    st.info(
+        "🤖 AI Recommendation: " + recommendation
+    )
 
-st.caption("Prototype demonstration using sample data.")
+# =========================================================
+# MANGANESE POTENTIAL ZONE IDENTIFICATION
+# =========================================================
+
+st.divider()
+
+st.header("🛰️ AI-Based Manganese Potential Zone Identification")
+
+st.write(
+    "Prototype analysis using satellite and geological indicators "
+    "to estimate manganese mineralisation potential."
+)
+
+col6, col7 = st.columns(2)
+
+with col6:
+    latitude = st.number_input(
+        "Latitude",
+        value=21.1500,
+        format="%.4f"
+    )
+
+with col7:
+    longitude = st.number_input(
+        "Longitude",
+        value=79.0900,
+        format="%.4f"
+    )
+
+st.subheader("🔬 Exploration Indicators")
+
+col8, col9, col10 = st.columns(3)
+
+with col8:
+    satellite_index = st.slider(
+        "Satellite Spectral Index",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.70
+    )
+
+with col9:
+    magnetic_anomaly = st.slider(
+        "Magnetic Anomaly Index",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.65
+    )
+
+with col10:
+    geological_score = st.slider(
+        "Geological Suitability",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.75
+    )
+
+if st.button("🛰️ Identify Manganese Potential Zone"):
+
+    potential_score = (
+        satellite_index * 0.40
+        + magnetic_anomaly * 0.25
+        + geological_score * 0.35
+    ) * 100
+
+    if potential_score >= 70:
+
+        zone = "🔴 HIGH POTENTIAL"
+
+        action = (
+            "Prioritize this zone for geological validation "
+            "and targeted exploration."
+        )
+
+    elif potential_score >= 45:
+
+        zone = "🟡 MEDIUM POTENTIAL"
+
+        action = (
+            "Conduct additional geological and geochemical "
+            "investigation."
+        )
+
+    else:
+
+        zone = "🟢 LOW POTENTIAL"
+
+        action = (
+            "Low priority for immediate exploration."
+        )
+
+    st.divider()
+
+    st.subheader("🗺️ Manganese Potential Analysis")
+
+    z1, z2 = st.columns(2)
+
+    with z1:
+        st.metric(
+            "Manganese Potential Score",
+            f"{potential_score:.1f}%"
+        )
+
+    with z2:
+        st.metric(
+            "Zone Classification",
+            zone
+        )
+
+    st.info(
+        "🤖 AI Recommendation: " + action
+    )
+
+    # Map location
+    map_data = pd.DataFrame({
+        "lat": [latitude],
+        "lon": [longitude]
+    })
+
+    st.subheader("📍 Exploration Location")
+
+    st.map(map_data)
+
+# =========================================================
+# FOOTER
+# =========================================================
+
+st.caption(
+    "GeoMind AI | Prototype demonstration using sample data"
+)
