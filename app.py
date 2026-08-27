@@ -196,7 +196,6 @@ if st.button("🔍 Analyse Mine Risk"):
 st.divider()
 
 st.header("🛰️ AI-Based Manganese Potential Zone Identification")
-
 st.subheader("📂 Exploration Input Data")
 
 uploaded_file = st.file_uploader(
@@ -213,7 +212,8 @@ if uploaded_file is not None:
         uploaded_data,
         use_container_width=True
     )
-st.subheader("🤖 ML Prediction")
+
+    st.subheader("🤖 ML Prediction")
 
     required_columns = [
         "production",
