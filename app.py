@@ -197,6 +197,22 @@ st.divider()
 
 st.header("🛰️ AI-Based Manganese Potential Zone Identification")
 
+st.subheader("📂 Exploration Input Data")
+
+uploaded_file = st.file_uploader(
+    "Upload Geological / Satellite Sample Data (CSV)",
+    type=["csv"]
+)
+
+if uploaded_file is not None:
+    uploaded_data = pd.read_csv(uploaded_file)
+
+    st.success("✅ Input data uploaded successfully")
+
+    st.dataframe(
+        uploaded_data,
+        use_container_width=True
+    )
 st.write(
     "Prototype analysis using satellite and geological indicators "
     "to estimate manganese mineralisation potential."
