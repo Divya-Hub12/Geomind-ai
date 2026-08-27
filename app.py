@@ -1,3 +1,5 @@
+import folium
+from streamlit_folium import st_folium
 import streamlit as st
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -341,46 +343,49 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
         "🤖 AI Recommendation: " + action
     )
 
-    # Map location
-    map_data = pd.DataFrame({
-        "lat": [latitude],
-        "lon": [longitude]
-    })
+       st.subheader("🗺️ Manganese Potential Zone Map")
 
-    # Multiple sample exploration zones
-    zone_data = pd.DataFrame({
-        "lat": [
-            latitude,
-            latitude + 0.08,
-            latitude - 0.06,
-            latitude + 0.12,
-            latitude - 0.10
-        ],
-        "lon": [
-            longitude,
-            longitude + 0.10,
-            longitude + 0.07,
-            longitude - 0.08,
-            longitude - 0.12
-        ],
-        "Potential": [
-            "Selected Zone",
-            "High Potential",
-            "Medium Potential",
-            "Low Potential",
-            "Medium Potential"
-        ]
-    })
+    # Create Folium Map centered at user latitude and longitude
+    m = folium.Map(location=[latitude, longitude], zoom_start=11)
 
-    st.subheader("🗺️ Manganese Potential Zone Map")
+    # Sample zone data points with their respective scores
+    sample_zones = [
+        {"lat": latitude, "lon": longitude, "score": potential_score},
+        {"lat": latitude + 0.08, "lon": longitude + 0.10, "score": 75.0},
+        {"lat": latitude - 0.06, "lon": longitude + 0.07, "score": 55.0},
+        {"lat": latitude + 0.12, "lon": longitude - 0.08, "score": 30.0},
+        {"lat": latitude - 0.10, "lon": longitude - 0.12, "score": 60.0}
+    ]
 
-    st.map(
-        zone_data,
-        latitude="lat",
-        longitude="lon"
-    )
+    # Iterate through each point and set dynamic marker colors based on the potential score
+    for point in sample_zones:
+        score = point["score"]
+        
+        if score >= 70:
+            color = "red"
+            status = "High Potential"
+        elif score >= 45:
+            color = "orange"  # For Yellow/Orange indicator
+            status = "Medium Potential"
+        else:
+            color = "green"
+            status = "Low Potential"
 
-    st.write("🔴 High Potential | 🟡 Medium Potential | 🟢 Low Potential")
+        folium.CircleMarker(
+            location=[point["lat"], point["lon"]],
+            radius=9,
+            color=color,
+            fill=True,
+            fill_color=color,
+            fill_opacity=0.8,
+            popup=f"{status} ({score:.1f}%)"
+        ).add_to(m)
+
+    # Display the map in Streamlit UI
+    st_folium(m, width=700, height=400)
+
+    st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")
+
 # =========================================================
 # FOOTER
 # =========================================================
