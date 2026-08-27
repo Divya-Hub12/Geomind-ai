@@ -213,6 +213,37 @@ if uploaded_file is not None:
         uploaded_data,
         use_container_width=True
     )
+st.subheader("🤖 ML Prediction")
+
+    required_columns = [
+        "production",
+        "target",
+        "reserve",
+        "rainfall",
+        "downtime"
+    ]
+
+    if all(column in uploaded_data.columns for column in required_columns):
+
+        prediction = model.predict(
+            uploaded_data[required_columns]
+        )
+
+        uploaded_data["ML Risk Prediction"] = prediction
+
+        st.success("✅ ML prediction completed")
+
+        st.dataframe(
+            uploaded_data,
+            use_container_width=True
+        )
+
+    else:
+
+        st.warning(
+            "⚠️ CSV must contain: production, target, reserve, rainfall, downtime"
+        )
+
 st.write(
     "Prototype analysis using satellite and geological indicators "
     "to estimate manganese mineralisation potential."
