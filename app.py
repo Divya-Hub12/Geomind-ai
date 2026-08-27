@@ -225,16 +225,10 @@ st.subheader("🤖 ML Prediction")
 
     if all(column in uploaded_data.columns for column in required_columns):
 
-        prediction = model.predict(
-            uploaded_data[required_columns]
-        )
-
-        uploaded_data["ML Risk Prediction"] = prediction
-
-        st.success("✅ ML prediction completed")
+        st.success("✅ Required input columns found")
 
         st.dataframe(
-            uploaded_data,
+            uploaded_data[required_columns],
             use_container_width=True
         )
 
