@@ -390,9 +390,9 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
         ).add_to(m)
 
     # Display the map in Streamlit UI
-    st_folium(m, width=700, height=400)
-
-    st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")
+if st.session_state.show_map:
+        st_folium(m, width=700, height=400)
+        st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")   
 
 # =========================================================
 # FOOTER
