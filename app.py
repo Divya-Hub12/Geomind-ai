@@ -392,8 +392,6 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
     st_folium(m, width=700, height=400)
     st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")
 
-
-
 # =========================================================
 # FOOTER
 # =========================================================
