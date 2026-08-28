@@ -105,6 +105,7 @@ with kpi3:
         label="⚠️ High Risk Occurrences",
         value=f"{(df['risk'] == 'HIGH').sum()} Mines"
     )
+
 # =========================================================
 # HISTORICAL PRODUCTION TRENDS
 # =========================================================
@@ -176,8 +177,6 @@ with col6:
         help="Enter delay in blasting operations"
     )
 
-
-
 if st.button("🔍 Analyse Mine Risk"):
 
     input_data = pd.DataFrame(
@@ -195,7 +194,7 @@ if st.button("🔍 Analyse Mine Risk"):
 
     shortfall = max(target - production, 0)
 
-        if prediction == "HIGH":
+    if prediction == "HIGH":
         risk = "🔴 HIGH"
         recommendation = (
             "Re-deploy equipment from low-priority zones, optimize blasting parameters, and adjust mine schedule to avoid shortfall."
@@ -213,7 +212,7 @@ if st.button("🔍 Analyse Mine Risk"):
             "Operations running smoothly. Continue planned production schedules."
         )
 
-
+    # --- Display results inside the button block ---
     st.divider()
 
     st.subheader("📈 Analysis Result")
