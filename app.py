@@ -291,7 +291,6 @@ if "potential_score" not in st.session_state:
 
 if "show_map" not in st.session_state:
     st.session_state.show_map = False
-
 if st.button("🛰️ Identify Manganese Potential Zone"):
     st.session_state.show_map = True
 
@@ -301,30 +300,31 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
         + geological_score * 0.35
     ) * 100
 
+
+# =========================================================
+# SHOW RESULT AND MAP
+# =========================================================
+
+if st.session_state.show_map:
+
     potential_score = st.session_state.potential_score
-    
+
     if potential_score >= 70:
-
         zone = "🔴 HIGH POTENTIAL"
-
         action = (
             "Prioritize this zone for geological validation "
             "and targeted exploration."
         )
 
     elif potential_score >= 45:
-
         zone = "🟡 MEDIUM POTENTIAL"
-
         action = (
             "Conduct additional geological and geochemical "
             "investigation."
         )
 
     else:
-
         zone = "🟢 LOW POTENTIAL"
-
         action = (
             "Low priority for immediate exploration."
         )
@@ -351,37 +351,66 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
         "🤖 AI Recommendation: " + action
     )
 
-    
+    # =====================================================
+    # MAP
+    # =====================================================
 
-    # Create Folium Map centered at user latitude and longitude
     st.subheader("🗺️ Manganese Potential Zone Map")
-    m = folium.Map(location=[latitude, longitude], zoom_start=11)
 
-    # Sample zone data points with their respective scores
+    m = folium.Map(
+        location=[latitude, longitude],
+        zoom_start=11
+    )
+
     sample_zones = [
-        {"lat": latitude, "lon": longitude, "score": potential_score},
-        {"lat": latitude + 0.08, "lon": longitude + 0.10, "score": 75.0},
-        {"lat": latitude - 0.06, "lon": longitude + 0.07, "score": 55.0},
-        {"lat": latitude + 0.12, "lon": longitude - 0.08, "score": 30.0},
-        {"lat": latitude - 0.10, "lon": longitude - 0.12, "score": 60.0}
+        {
+            "lat": latitude,
+            "lon": longitude,
+            "score": potential_score
+        },
+        {
+            "lat": latitude + 0.08,
+            "lon": longitude + 0.10,
+            "score": 75.0
+        },
+        {
+            "lat": latitude - 0.06,
+            "lon": longitude + 0.07,
+            "score": 55.0
+        },
+        {
+            "lat": latitude + 0.12,
+            "lon": longitude - 0.08,
+            "score": 30.0
+        },
+        {
+            "lat": latitude - 0.10,
+            "lon": longitude - 0.12,
+            "score": 60.0
+        }
     ]
 
-    # Iterate through each point and set dynamic marker colors based on the potential score
     for point in sample_zones:
+
         score = point["score"]
-        
+
         if score >= 70:
             color = "red"
             status = "High Potential"
+
         elif score >= 45:
-            color = "orange"  # For Yellow/Orange indicator
+            color = "orange"
             status = "Medium Potential"
+
         else:
             color = "green"
             status = "Low Potential"
 
         folium.CircleMarker(
-            location=[point["lat"], point["lon"]],
+            location=[
+                point["lat"],
+                point["lon"]
+            ],
             radius=9,
             color=color,
             fill=True,
@@ -389,8 +418,17 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
             fill_opacity=0.8,
             popup=f"{status} ({score:.1f}%)"
         ).add_to(m)
-    st_folium(m, width=700, height=400)
-    st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")
+
+    st_folium(
+        m,
+        width=700,
+        height=400,
+        key="manganese_map"
+    )
+
+    st.write(
+        "🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential"
+    )
 
 # =========================================================
 # FOOTER
