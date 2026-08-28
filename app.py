@@ -1,4 +1,4 @@
-import folium
+ import folium
 from streamlit_folium import st_folium
 import streamlit as st
 import pandas as pd
@@ -343,7 +343,7 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
         "🤖 AI Recommendation: " + action
     )
 
-       st.subheader("🗺️ Manganese Potential Zone Map")
+    st.subheader("🗺️ Manganese Potential Zone Map")
 
     # Create Folium Map centered at user latitude and longitude
     m = folium.Map(location=[latitude, longitude], zoom_start=11)
