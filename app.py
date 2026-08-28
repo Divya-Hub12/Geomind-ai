@@ -286,10 +286,12 @@ with col10:
         max_value=1.0,
         value=0.75
     )
+if "potential_score" not in st.session_state:
+    st.session_state.potential_score = None
 
 if st.button("🛰️ Identify Manganese Potential Zone"):
 
-    potential_score = (
+    st.session_state.potential_score = (
         satellite_index * 0.40
         + magnetic_anomaly * 0.25
         + geological_score * 0.35
