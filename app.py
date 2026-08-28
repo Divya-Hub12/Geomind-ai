@@ -1,21 +1,13 @@
+import pandas as pd
+import streamlit as st
 import folium
 from streamlit_folium import st_folium
-import streamlit as st
-import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
 st.set_page_config(
     page_title="GeoMind AI",
     page_icon="🌍",
     layout="wide"
-)
-
-st.title("🌍 GeoMind AI")
-st.subheader("Manganese Mine Intelligence Dashboard")
-
-st.write(
-    "AI/ML-based prototype for manganese potential identification "
-    "and mine production risk analysis."
 )
 
 # =========================================================
@@ -80,6 +72,39 @@ model = RandomForestClassifier(
 )
 
 model.fit(X, y)
+
+# =========================================================
+# HEADER & KPI CARDS
+# =========================================================
+
+st.title("🌍 GeoMind AI")
+st.subheader("Manganese Mine Intelligence Dashboard")
+
+st.write(
+    "AI/ML-based prototype for manganese potential identification "
+    "and mine production risk analysis."
+)
+
+# --- Quick Stats KPI Cards ---
+kpi1, kpi2, kpi3 = st.columns(3)
+
+with kpi1:
+    st.metric(
+        label="🎯 Target Production",
+        value=f"{df['target'].iloc[0]:,} T"
+    )
+
+with kpi2:
+    st.metric(
+        label="📊 Avg Historical Production",
+        value=f"{int(df['production'].mean()):,} T"
+    )
+
+with kpi3:
+    st.metric(
+        label="⚠️ High Risk Occurrences",
+        value=f"{(df['risk'] == 'HIGH').sum()} Mines"
+    )
 
 # =========================================================
 # PRODUCTION RISK ANALYSIS
@@ -200,6 +225,15 @@ st.divider()
 st.header("🛰️ AI-Based Manganese Potential Zone Identification")
 st.subheader("📂 Exploration Input Data")
 
+sample_csv_data = df[features].head(5).to_csv(index=False).encode('utf-8')
+
+st.download_button(
+    label="💡 Download Sample CSV for Testing",
+    data=sample_csv_data,
+    file_name="sample_mine_data.csv",
+    mime="text/csv"
+)
+
 uploaded_file = st.file_uploader(
     "Upload Geological / Satellite Sample Data (CSV)",
     type=["csv"]
@@ -231,6 +265,21 @@ if uploaded_file is not None:
         st.dataframe(
             uploaded_data[required_columns],
             use_container_width=True
+        )
+
+        # Batch Prediction for Uploaded File
+        predictions = model.predict(uploaded_data[required_columns])
+        uploaded_data["Predicted_Risk_Level"] = predictions
+
+        st.subheader("📋 Batch Risk Prediction Results")
+        st.dataframe(uploaded_data, use_container_width=True)
+
+        csv_download = uploaded_data.to_csv(index=False).encode("utf-8")
+        st.download_button(
+            label="📥 Download Predicted Results (CSV)",
+            data=csv_download,
+            file_name="manganese_risk_predictions.csv",
+            mime="text/csv",
         )
 
     else:
@@ -265,18 +314,20 @@ col8, col9, col10 = st.columns(3)
 
 with col8:
     satellite_index = st.slider(
-        "Satellite Spectral Index",
+        "Satellite Spectral Index (NDVI/Iron Oxide)",
         min_value=0.0,
         max_value=1.0,
-        value=0.70
+        value=0.70,
+        help="Higher values indicate spectral signatures of Manganese minerals"
     )
 
 with col9:
     magnetic_anomaly = st.slider(
-        "Magnetic Anomaly Index",
+        "Magnetic / Soil Moisture Anomaly",
         min_value=0.0,
         max_value=1.0,
-        value=0.65
+        value=0.65,
+        help="Sub-surface geophysical inputs from satellite imagery"
     )
 
 with col10:
@@ -286,11 +337,13 @@ with col10:
         max_value=1.0,
         value=0.75
     )
+
 if "potential_score" not in st.session_state:
     st.session_state.potential_score = None
 
 if "show_map" not in st.session_state:
     st.session_state.show_map = False
+
 if st.button("🛰️ Identify Manganese Potential Zone"):
     st.session_state.show_map = True
 
@@ -299,7 +352,6 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
         + magnetic_anomaly * 0.25
         + geological_score * 0.35
     ) * 100
-
 
 # =========================================================
 # SHOW RESULT AND MAP
