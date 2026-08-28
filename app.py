@@ -296,6 +296,8 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
         + magnetic_anomaly * 0.25
         + geological_score * 0.35
     ) * 100
+
+    potential_score = st.session_state.potential_score
     
     if potential_score >= 70:
 
