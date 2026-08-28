@@ -395,8 +395,7 @@ if st.session_state.show_map:
         st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")
 
 st.subheader("🗺️ Manganese Potential Zone Map")
-st_folium(m, width=700, height=400)   
-
+st_folium(m, width=700, height=400)
 # =========================================================
 # FOOTER
 # =========================================================
