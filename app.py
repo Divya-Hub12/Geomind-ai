@@ -105,6 +105,20 @@ with kpi3:
         label="⚠️ High Risk Occurrences",
         value=f"{(df['risk'] == 'HIGH').sum()} Mines"
     )
+# =========================================================
+# HISTORICAL PRODUCTION TRENDS
+# =========================================================
+
+st.divider()
+st.subheader("📈 Historical Production Trends")
+
+chart_data = pd.DataFrame({
+    "Year": ["2021", "2022", "2023", "2024", "2025"],
+    "Production (Tonnes)": [6500, 7100, 6800, 7400, 7380]
+}).set_index("Year")
+
+st.line_chart(chart_data)
+
 
 # =========================================================
 # PRODUCTION RISK ANALYSIS
@@ -150,8 +164,10 @@ with col5:
     downtime = st.number_input(
         "Equipment Downtime (hours)",
         min_value=0,
-        value=18
+        value=18,
+        help="Enter total downtime in hours"
     )
+
 
 if st.button("🔍 Analyse Mine Risk"):
 
