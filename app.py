@@ -151,7 +151,7 @@ with col3:
         value=82000
     )
 
-col4, col5 = st.columns(2)
+col4, col5, col6 = st.columns(3)
 
 with col4:
     rainfall = st.number_input(
@@ -167,6 +167,15 @@ with col5:
         value=18,
         help="Enter total downtime in hours"
     )
+
+with col6:
+    blasting_delay = st.number_input(
+        "Blasting Delay (hours) 💣",
+        min_value=0,
+        value=2,
+        help="Enter delay in blasting operations"
+    )
+
 
 
 if st.button("🔍 Analyse Mine Risk"):
@@ -186,23 +195,24 @@ if st.button("🔍 Analyse Mine Risk"):
 
     shortfall = max(target - production, 0)
 
-    if prediction == "HIGH":
+        if prediction == "HIGH":
         risk = "🔴 HIGH"
         recommendation = (
-            "Adjust mine schedule and review equipment availability."
+            "Re-deploy equipment from low-priority zones, optimize blasting parameters, and adjust mine schedule to avoid shortfall."
         )
 
     elif prediction == "MEDIUM":
         risk = "🟠 MEDIUM"
         recommendation = (
-            "Monitor weather conditions and equipment performance."
+            "Monitor weather forecasts, clear blasting delays, and review equipment maintenance logs."
         )
 
     else:
         risk = "🟢 LOW"
         recommendation = (
-            "Continue planned operations."
+            "Operations running smoothly. Continue planned production schedules."
         )
+
 
     st.divider()
 
@@ -326,7 +336,7 @@ with col7:
 
 st.subheader("🔬 Exploration Indicators")
 
-col8, col9, col10 = st.columns(3)
+col8, col9, col10, col11 = st.columns(4)
 
 with col8:
     satellite_index = st.slider(
@@ -353,6 +363,16 @@ with col10:
         max_value=1.0,
         value=0.75
     )
+
+with col11:
+    land_temp = st.slider(
+        "Land Surface Temperature 🌡️",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.60,
+        help="Thermal satellite inputs for surface anomaly identification"
+    )
+
 
 if "potential_score" not in st.session_state:
     st.session_state.potential_score = None
