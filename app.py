@@ -389,8 +389,6 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
             popup=f"{status} ({score:.1f}%)"
         ).add_to(m)
 
-st.subheader("🗺️ Manganese Potential Zone Map")
-st_folium(m, width=700, height=400)
 st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")
 
 # =========================================================
