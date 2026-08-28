@@ -354,6 +354,7 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
     
 
     # Create Folium Map centered at user latitude and longitude
+    st.subheader("🗺️ Manganese Potential Zone Map")
     m = folium.Map(location=[latitude, longitude], zoom_start=11)
 
     # Sample zone data points with their respective scores
@@ -389,7 +390,7 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
             popup=f"{status} ({score:.1f}%)"
         ).add_to(m)
 
-st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")
+
 
 # =========================================================
 # FOOTER
