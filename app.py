@@ -351,7 +351,7 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
         "🤖 AI Recommendation: " + action
     )
 
-    st.subheader("🗺️ Manganese Potential Zone Map")
+    
 
     # Create Folium Map centered at user latitude and longitude
     m = folium.Map(location=[latitude, longitude], zoom_start=11)
@@ -392,7 +392,10 @@ if st.button("🛰️ Identify Manganese Potential Zone"):
     # Display the map in Streamlit UI
 if st.session_state.show_map:
         st_folium(m, width=700, height=400)
-        st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")   
+        st.write("🔴 High Potential | 🟠 Medium Potential | 🟢 Low Potential")
+
+st.subheader("🗺️ Manganese Potential Zone Map")
+st_folium(m, width=700, height=400)   
 
 # =========================================================
 # FOOTER
